@@ -396,6 +396,7 @@
         CPTMutablePlotRange *orthogonalRange = [[thePlotSpace plotRangeForCoordinate:orthogonalCoordinate] mutableCopy];
         CPTPlotRange *theGridLineRange       = self.gridLinesRange;
         CPTMutablePlotRange *labeledRange    = nil;
+        CPTPlotRangeArray gridExclusionRanges = self.gridLineExlusionRanges;
 
         switch ( self.labelingPolicy ) {
             case CPTAxisLabelingPolicyNone:
@@ -440,6 +441,20 @@
             NSDecimal locationDecimal = location.decimalValue;
 
             if ( labeledRange && ![labeledRange contains:locationDecimal] ) {
+                continue;
+            }
+            
+            BOOL skipGridLine = NO;
+            
+            for (CPTPlotRange *range in gridExclusionRanges)
+            {
+                if ([range contains: locationDecimal]) {
+                    skipGridLine = YES;
+                    break;
+                }
+            }
+            
+            if (skipGridLine) {
                 continue;
             }
 

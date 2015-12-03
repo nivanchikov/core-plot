@@ -399,6 +399,9 @@ NSDecimal CPTNiceLength(NSDecimal length);
  **/
 @synthesize gridLinesRange;
 
+
+@synthesize gridLineExlusionRanges;
+
 // Background Bands
 
 /** @property CPTFillArray alternatingBandFills
@@ -592,6 +595,7 @@ NSDecimal CPTNiceLength(NSDecimal length);
         mutableBackgroundLimitBands = nil;
         minorGridLines              = nil;
         majorGridLines              = nil;
+        gridLineExlusionRanges      = nil;
         pointingDeviceDownLabel     = nil;
         pointingDeviceDownTickLabel = nil;
         inTitleUpdate               = NO;
@@ -669,6 +673,7 @@ NSDecimal CPTNiceLength(NSDecimal length);
         pointingDeviceDownTickLabel = theLayer->pointingDeviceDownTickLabel;
         inTitleUpdate               = theLayer->inTitleUpdate;
         labelsUpdated               = theLayer->labelsUpdated;
+        gridLineExlusionRanges      = theLayer->gridLineExlusionRanges;
     }
     return self;
 }
@@ -678,6 +683,7 @@ NSDecimal CPTNiceLength(NSDecimal length);
     plotArea       = nil;
     minorGridLines = nil;
     majorGridLines = nil;
+    gridLineExlusionRanges = nil;
     for ( CPTAxisLabel *label in axisLabels ) {
         [label.contentLayer removeFromSuperlayer];
     }
@@ -740,6 +746,7 @@ NSDecimal CPTNiceLength(NSDecimal length);
     [coder encodeInteger:self.tickDirection forKey:@"CPTAxis.tickDirection"];
     [coder encodeBool:self.needsRelabel forKey:@"CPTAxis.needsRelabel"];
     [coder encodeObject:self.labelExclusionRanges forKey:@"CPTAxis.labelExclusionRanges"];
+    [coder encodeObject:self.gridLineExlusionRanges forKey:@"CPTAxis.gridLineExlusionRanges"];
     [coder encodeObject:self.visibleRange forKey:@"CPTAxis.visibleRange"];
     [coder encodeObject:self.visibleAxisRange forKey:@"CPTAxis.visibleAxisRange"];
     [coder encodeObject:self.gridLinesRange forKey:@"CPTAxis.gridLinesRange"];
@@ -807,6 +814,7 @@ NSDecimal CPTNiceLength(NSDecimal length);
         tickDirection               = (CPTSign)[coder decodeIntegerForKey : @"CPTAxis.tickDirection"];
         needsRelabel                = [coder decodeBoolForKey:@"CPTAxis.needsRelabel"];
         labelExclusionRanges        = [coder decodeObjectForKey:@"CPTAxis.labelExclusionRanges"];
+        gridLineExlusionRanges      = [coder decodeObjectForKey:@"CPTAxis.gridLineExlusionRanges"];
         visibleRange                = [[coder decodeObjectForKey:@"CPTAxis.visibleRange"] copy];
         visibleAxisRange            = [[coder decodeObjectForKey:@"CPTAxis.visibleAxisRange"] copy];
         gridLinesRange              = [[coder decodeObjectForKey:@"CPTAxis.gridLinesRange"] copy];
@@ -2500,6 +2508,16 @@ NSDecimal CPTNiceLength(NSDecimal length)
         self.needsRelabel    = YES;
     }
 }
+
+
+- (void) setGridLineExlusionRanges:(CPTPlotRangeArray)ranges
+{
+    if ( ranges != gridLineExlusionRanges ) {
+        gridLineExlusionRanges = ranges;
+        self.needsRelabel = YES;
+    }
+}
+
 
 -(void)setNeedsRelabel:(BOOL)newNeedsRelabel
 {

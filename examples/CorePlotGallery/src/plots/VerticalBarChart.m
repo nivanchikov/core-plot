@@ -148,6 +148,7 @@ static const BOOL kUseHorizontalBars = NO;
         else {
             y.visibleRange   = [CPTPlotRange plotRangeWithLocation:@0.0 length:@100.0];
             y.gridLinesRange = [CPTPlotRange plotRangeWithLocation:@(-0.5) length:@10.0];
+            y.gridLineExlusionRanges = @[[CPTPlotRange plotRangeWithLocation: @65 length: @10]];
         }
 
         y.title       = @"Y Axis";

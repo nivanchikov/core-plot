@@ -266,6 +266,7 @@ typedef NSMutableArray<__kindof CPTAxis *> *CPTMutableAxisArray;
 @property (nonatomic, readwrite, copy, nullable) CPTLineStyle *majorGridLineStyle;
 @property (nonatomic, readwrite, copy, nullable) CPTLineStyle *minorGridLineStyle;
 @property (nonatomic, readwrite, copy, nullable) CPTPlotRange *gridLinesRange;
+@property (nonatomic, readwrite, strong, nullable) CPTPlotRangeArray gridLineExlusionRanges;
 /// @}
 
 /// @name Background Bands
